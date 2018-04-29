@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 583bf121ae888b546913ba6c76460022
+timeCreated: 1520411608
+licenseType: Free
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - water_well_prefab: {fileID: 100002, guid: 86e9f6bb23445c2418abce9d418b64a9, type: 2}
+  - well_marker: {fileID: 1148105499086998, guid: 470069c8772fdf047a14992d9a721041,
+      type: 2}
+  - depth: {fileID: 4533064569404950, guid: 20b34e088eb166c429e05712716de28f, type: 2}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
