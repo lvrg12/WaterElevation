@@ -89,7 +89,13 @@ public class GenerateWells : MonoBehaviour
 
 	void SetWells()
 	{
-		TextAsset txtAsset = (TextAsset)Resources.Load("Lubbock_optimized", typeof(TextAsset));
+        var county = "Lubbock";
+        float left = -101.9217f;
+        float right = -101.83467f;
+        float up = 33.62077f;
+        float down = 33.54782f;
+
+		TextAsset txtAsset = (TextAsset)Resources.Load(county+"_optimized", typeof(TextAsset));
 		string[] lines = txtAsset.text.Split('\n');
 		scale = 0.0625f;
 
@@ -105,9 +111,9 @@ public class GenerateWells : MonoBehaviour
 			thickness = float.Parse(values[7]);
 			//lsd = float.Parse(values[8]);
 
-			if (longitude >= -101.9217f && longitude <= -101.83467)
+			if (longitude >= left && longitude <= right)
 			{
-				if (latitude >= 33.54782 && latitude <= 33.62077)
+				if (latitude >= down && latitude <= up)
 				{
 					float xPos = (longitude - -102.0156f) * 1862.28756f;
 					float zPos = (latitude - 33.47297f) * 2217.098262f;
