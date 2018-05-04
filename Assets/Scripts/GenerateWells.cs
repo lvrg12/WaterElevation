@@ -102,12 +102,10 @@ public class GenerateWells : MonoBehaviour
 		return rescale.y;
 	}
 
-    public void callFunc()
+    public void SetYear()
     {
-        // if (mainSlider.value == 1) { //Set1996(); }
-        // else if (mainSlider.value == 2) { //Set1997(); }
-        // else if (mainSlider.value == 3) { //Set1998(); }
-        // else if (mainSlider.value == 4) { //Set1999(); }
+        int year = mainSlider.value;
+        print("This is the year: " + year);
     }
 
     void SetTerrain()
@@ -124,31 +122,31 @@ public class GenerateWells : MonoBehaviour
         if(city == "Lu")
         {
             GameObject terr = Instantiate(lubbock_map, new Vector3 (0,1.7f, 0), Quaternion.identity);
-            datafile = "Lubbock_optimized";
+            datafile = "Lubbock_optimized_May";
             coords = lines[1].Split(',');
         }
         else if(city == "Am")
         {
             GameObject terr = Instantiate(amarillo_map, new Vector3 (0,1.7f, 0), Quaternion.identity);
-            datafile = "Lubbock_optimized";
+            datafile = "Randall_optimized_May";
             coords = lines[1].Split(',');
         }
         else if(city == "La")
         {
             GameObject terr = Instantiate(lamesa_map, new Vector3 (0,1.7f, 0), Quaternion.identity);
-            datafile = "Lubbock_optimized";
+            datafile = "Dawson_optimized_May";
             coords = lines[1].Split(',');
         }
         else if(city == "Mi")
         {
             GameObject terr = Instantiate(midland_map, new Vector3 (0,1.7f, 0), Quaternion.identity);
-            datafile = "Lubbock_optimized";
+            datafile = "Midland_optimized_May";
             coords = lines[1].Split(',');
         }
         else if(city == "Pl")
         {
             GameObject terr = Instantiate(plainview_map, new Vector3 (0,1.7f, 0), Quaternion.identity);
-            datafile = "Lubbock_optimized";
+            datafile = "Hale_optimized_May";
             coords = lines[1].Split(',');
         }
         else
@@ -171,21 +169,17 @@ public class GenerateWells : MonoBehaviour
         float up = coor[2];
         float down = coor[3];
 
-		TextAsset txtAsset = (TextAsset)Resources.Load(datafile, typeof(TextAsset));
+		TextAsset txtAsset = (TextAsset)Resources.Load(datafile+"WE", typeof(TextAsset));
+		TextAsset txtAsset = (TextAsset)Resources.Load(datafile+"ST", typeof(TextAsset));
 		string[] lines = txtAsset.text.Split('\n');
+        string[] linesST = txtAsset.text.Split('\n');
 		scale = 0.0625f;
 
         for(int index =1; index < lines.Length-1; index++)
         {
             string[] values = lines[index].Split(',');
-			float longitude,latitude,well_depth,thickness,water_el,land_el;
-			latitude = float.Parse(values[2]);
-			longitude = float.Parse(values[3]);
-			well_depth = float.Parse(values[4]);
-			land_el = float.Parse(values[5]);
-			water_el = float.Parse(values[6]);
-			thickness = float.Parse(values[7]);
-			//lsd = float.Parse(values[8]);
+			float latitude = float.Parse(values[2]);
+			float longitude = float.Parse(values[3]);
 
 			if (longitude >= left && longitude <= right)
 			{
@@ -193,24 +187,26 @@ public class GenerateWells : MonoBehaviour
 				{
 					float xPos = (longitude - -102.0156f) * 1862.28756f;
 					float zPos = (latitude - 33.47297f) * 2217.098262f;
+                    float well_depth = float.Parse(values[4]);
+			        float land_el = float.Parse(values[5]);
+                    float[] water_el = values.SubArray(7, 20);
+                    float[] thickness = linesST[index].Split(',').SubArray(7, 20);
+			        // float lsd = float.Parse(values[6]);
 
+                    // wells represent 1995 data at start
 					GameObject well = Instantiate(water_well, new Vector3 (xPos, scale*land_el+3.5f, zPos), Quaternion.identity);
 					GameObject box = Instantiate(container_cube, new Vector3 (xPos, scale*land_el+3.5f, zPos), Quaternion.identity);
 					GameObject marker = Instantiate(well_marker, new Vector3 (xPos, 150f, zPos), Quaternion.Euler(new Vector3(80,0,0)));
                     GameObject Wspring = Instantiate(Spring, new Vector3(xPos, scale * land_el, zPos), Quaternion.identity);
-                    
-					//GameObject depth = Instantiate(depth_object, new Vector3(xPos, scale*land_el , zPos), Quaternion.identity);
-					//GameObject water = Instantiate(water_cyl, new Vector3(xPos, scale*water_el - (scale*thickness), zPos), Quaternion.identity);
-
 					GameObject depth = Instantiate(depth_object, new Vector3(xPos, scale*land_el , zPos), Quaternion.identity);
-					GameObject water = Instantiate(water_cyl, new Vector3(xPos, scale*water_el, zPos), Quaternion.identity);
+					GameObject water = Instantiate(water_cyl, new Vector3(xPos, scale*water_el[0], zPos), Quaternion.identity);
 
                     depth.transform.localScale = new Vector3(0.75f, scale * well_depth, 0.75f);
 					depth.transform.localPosition = new Vector3(xPos,scale*land_el,zPos);
 
-					water.transform.localScale = new Vector3(5.0f, scale * thickness, 5.0f);
-					float w = newYScale(water,scale * thickness);
-					water.transform.localPosition = new Vector3(xPos,scale*water_el - w,zPos);
+					water.transform.localScale = new Vector3(5.0f, scale * thickness[0], 5.0f);
+					float w = newYScale(water,scale * thickness[0]);
+					water.transform.localPosition = new Vector3(xPos,scale*water_el[0] - w,zPos);
 
 					marker.transform.localScale = new Vector3(10,10,10);
 
@@ -224,17 +220,21 @@ public class GenerateWells : MonoBehaviour
                     var info2 = "\nCounty: "+values[1];
 					var info3 = "\nWell Depth: "+ well_depth;
                     var info4 = "\nLand Elevation: "+values[5];
-					var info5 = "\nWater Elevation: " + values [6];
-                    var info6 = "\nSaturated Thickness: " + values [7];
-					var info7 = "\nLast Measurement On: " + values [9] + "/" + values [10] + "/" + values[11];
+					// var info5 = "\nWater Elevation: " + values [6];
+                    // var info6 = "\nSaturated Thickness: " + values [7];
+					// var info7 = "\nLast Measurement On: " + values [9] + "/" + values [10] + "/" + values[11];
 
 					box.GetComponent<DisplayInfo> ().i1 = info1;
                     box.GetComponent<DisplayInfo> ().i2 = info2;
                     box.GetComponent<DisplayInfo> ().i3 = info3;
                     box.GetComponent<DisplayInfo> ().i4 = info4;
-                    box.GetComponent<DisplayInfo> ().i5 = info5;
-                    box.GetComponent<DisplayInfo> ().i6 = info6;
-                    box.GetComponent<DisplayInfo> ().i7 = info7;
+                    // box.GetComponent<DisplayInfo> ().i5 = info5;
+                    // box.GetComponent<DisplayInfo> ().i6 = info6;
+                    // box.GetComponent<DisplayInfo> ().i7 = info7;
+                    for(int i = 0; i<thickness.Length; i++)
+                    {
+                        box.GetComponent<DisplayInfo> ().i8[i] = (i+1995)+": "+thickness[i];
+                    }
 					marker.GetComponent<SpriteRenderer>().color = Color.green;
 
 					wells.Add(well);
@@ -319,14 +319,7 @@ public class GenerateWells : MonoBehaviour
         
 		UpdateColors();
     }
-
-    // to-do-list:
-    // 1.Read data from a csv file called "precipitation_data"
-    // 2.read the data in each line into an array and read each value in the array into new array
-    // 3.calculate the average precipitation data for the Summer
-    // 4.read data from a csv file called "raster_to_point",then set the longitude, latitude and thickness
-    // 5.Instantiate prefab called "water_cube", created the water layer
-    // 6.set the average precipitation data to be the water layer thickness 
+ 
     public void SetSummer()
     {
         TextAsset txtAsset = (TextAsset)Resources.Load("precipitation_data", typeof(TextAsset));
@@ -368,13 +361,6 @@ public class GenerateWells : MonoBehaviour
 
     }
 
-    // to-do-list:
-    // 1.Read data from a csv file called "precipitation_data"
-    // 2.read the data in each line into an array and read each value in the array into new array
-    // 3.calculate the average precipitation data for the Fall
-    // 4.read data from a csv file called "raster_to_point",then set the longitude, latitude and thickness
-    // 5.Instantiate prefab called "water_cube", created the water layer
-    // 6.set the average precipitation data to be the water layer thickness 
     public void SetFall()
     {
         TextAsset txtAsset = (TextAsset)Resources.Load("precipitation_data", typeof(TextAsset));
@@ -414,14 +400,6 @@ public class GenerateWells : MonoBehaviour
 
 		UpdateColors();
     }
-
-    // to-do-list:
-    // 1.Read data from a csv file called "precipitation_data"
-    // 2.read the data in each line into an array and read each value in the array into new array
-    // 3.calculate the average precipitation data for the Winter
-    // 4.read data from a csv file called "raster_to_point",then set the longitude, latitude and thickness
-    // 5.Instantiate prefab called "water_cube", created the water layer
-    // 6.set the average precipitation data to be the water layer thickness 
 
     public void SetWinter()
     {
