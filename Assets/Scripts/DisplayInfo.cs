@@ -13,8 +13,7 @@ public class DisplayInfo : MonoBehaviour
     public string i5 = "Water Elevation";
     public string i6 = "Saturated Thickness";
     public string i7 = "Last Measurement On";
-    public string[] i8 = ["","","","","","","","","","",
-                          "","","","","","","","","",""];
+    public string[] i8 = {"","","","","","","","","","","","","","","","","","","",""};
 
     private Text t;
     private Text t2;
@@ -39,7 +38,7 @@ public class DisplayInfo : MonoBehaviour
 
         t.text = i1+i2+i3+i4+i5+i6+i7;
         string i8All = "";
-        
+
         for(int i = 0; i<i8.Length; i++)
         {
             i8All += i8[i];

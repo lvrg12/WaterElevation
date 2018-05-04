@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Linq;
+using System.Text;
+using System;
 
 public class GenerateWells : MonoBehaviour
 {
@@ -47,7 +50,7 @@ public class GenerateWells : MonoBehaviour
         SetTerrain();
 		SetWells();
 		SetUGWater();
-		UpdateColors();
+		//UpdateColors();
 
         mainSlider = GameObject.Find("Slider").GetComponent<Slider>();
     }
@@ -104,7 +107,7 @@ public class GenerateWells : MonoBehaviour
 
     public void SetYear()
     {
-        int year = mainSlider.value;
+        float year = mainSlider.value;
         print("This is the year: " + year);
     }
 
@@ -118,44 +121,46 @@ public class GenerateWells : MonoBehaviour
 		city = "" + txtAsset.text[0] + txtAsset.text[1];
 
         string[] coords;
+        GameObject terr;
 
         if(city == "Lu")
         {
-            GameObject terr = Instantiate(lubbock_map, new Vector3 (0,1.7f, 0), Quaternion.identity);
+            terr = Instantiate(lubbock_map, new Vector3 (0,-3.7f, 0), Quaternion.identity);
             datafile = "Lubbock_optimized_May";
             coords = lines[1].Split(',');
         }
         else if(city == "Am")
         {
-            GameObject terr = Instantiate(amarillo_map, new Vector3 (0,1.7f, 0), Quaternion.identity);
+            terr = Instantiate(amarillo_map, new Vector3 (0,1.7f, 0), Quaternion.identity);
             datafile = "Randall_optimized_May";
             coords = lines[1].Split(',');
         }
         else if(city == "La")
         {
-            GameObject terr = Instantiate(lamesa_map, new Vector3 (0,1.7f, 0), Quaternion.identity);
+            terr = Instantiate(lamesa_map, new Vector3 (0,1.7f, 0), Quaternion.identity);
             datafile = "Dawson_optimized_May";
             coords = lines[1].Split(',');
         }
         else if(city == "Mi")
         {
-            GameObject terr = Instantiate(midland_map, new Vector3 (0,1.7f, 0), Quaternion.identity);
+            terr = Instantiate(midland_map, new Vector3 (0,1.7f, 0), Quaternion.identity);
             datafile = "Midland_optimized_May";
             coords = lines[1].Split(',');
         }
         else if(city == "Pl")
         {
-            GameObject terr = Instantiate(plainview_map, new Vector3 (0,1.7f, 0), Quaternion.identity);
+            terr = Instantiate(plainview_map, new Vector3 (0,1.7f, 0), Quaternion.identity);
             datafile = "Hale_optimized_May";
             coords = lines[1].Split(',');
         }
         else
         {
-            GameObject terr = Instantiate(lubbock_map, new Vector3 (0,1.7f, 0), Quaternion.identity);
+            terr = Instantiate(lubbock_map, new Vector3 (0,1.7f, 0), Quaternion.identity);
             datafile = "Lubbock_optimized";
             coords = lines[1].Split(',');
         }
 
+        terr.name = txtAsset.text;
         coor[0] = float.Parse(coords[2]);
         coor[1] = float.Parse(coords[3]);
         coor[2] = float.Parse(coords[4]);
@@ -170,9 +175,9 @@ public class GenerateWells : MonoBehaviour
         float down = coor[3];
 
 		TextAsset txtAsset = (TextAsset)Resources.Load(datafile+"WE", typeof(TextAsset));
-		TextAsset txtAsset = (TextAsset)Resources.Load(datafile+"ST", typeof(TextAsset));
+		TextAsset txtAssetST = (TextAsset)Resources.Load(datafile+"ST", typeof(TextAsset));
 		string[] lines = txtAsset.text.Split('\n');
-        string[] linesST = txtAsset.text.Split('\n');
+        string[] linesST = txtAssetST.text.Split('\n');
 		scale = 0.0625f;
 
         for(int index =1; index < lines.Length-1; index++)
@@ -189,9 +194,26 @@ public class GenerateWells : MonoBehaviour
 					float zPos = (latitude - 33.47297f) * 2217.098262f;
                     float well_depth = float.Parse(values[4]);
 			        float land_el = float.Parse(values[5]);
-                    float[] water_el = values.SubArray(7, 20);
-                    float[] thickness = linesST[index].Split(',').SubArray(7, 20);
+                    string[] water_elString = new string[20];
+                    string[] thicknessString = new string[20];
+                    Array.Copy(values,7,water_elString,0,20);
+                    Array.Copy(linesST[index].Split(','),7,thicknessString,0,20);
 			        // float lsd = float.Parse(values[6]);
+
+                    float[] water_el = new float[20];
+                    float[] thickness = new float[20];
+                    for(int i = 0; i<20; i++)
+                    {
+                        water_el[i] = float.Parse(water_elString[i]);
+                        thickness[i] = float.Parse(thicknessString[i]);
+                    }
+
+                    //temporary
+                    if(thickness[0] == 0)
+                    {
+                        thickness[0] = 10.0f;
+                        water_el[0] = 3000.0f;
+                    }
 
                     // wells represent 1995 data at start
 					GameObject well = Instantiate(water_well, new Vector3 (xPos, scale*land_el+3.5f, zPos), Quaternion.identity);
@@ -210,11 +232,12 @@ public class GenerateWells : MonoBehaviour
 
 					marker.transform.localScale = new Vector3(10,10,10);
 
-					well.name = values [0];
-					box.name = values [0];
+					well.name = values [0]+"_welltop";
+					box.name = values [0]+"_box";
 					marker.name = values[0]+"_marker";
 					depth.name = values[0]+"_well";
 					water.name = values[0]+"_st";
+                    Wspring.name = values[0]+"_spring";
 
 					var info1 = "\nLocation: "+ longitude +", "+latitude;
                     var info2 = "\nCounty: "+values[1];
@@ -242,11 +265,11 @@ public class GenerateWells : MonoBehaviour
 					depths.Add(depth);
 					waters.Add(water);
 					boxs.Add(box);
-					wes.Add(water_el);
-					sts.Add(thickness);
-                    sts_orlen.Add(thickness);
-					deps.Add(well_depth);
-					les.Add(land_el);
+					// wes.Add(water_el);
+					// sts.Add(thickness);
+                    // sts_orlen.Add(thickness);
+					// deps.Add(well_depth);
+					// les.Add(land_el);
 				}
 			}
         }
@@ -254,6 +277,11 @@ public class GenerateWells : MonoBehaviour
 
 	void SetUGWater()
 	{
+        float left = coor[0];
+        float right = coor[1];
+        float up = coor[2];
+        float down = coor[3];
+        
         TextAsset txtAsset = (TextAsset)Resources.Load("raster_to_point", typeof(TextAsset));
         string[] lines = txtAsset.text.Split('\n');
 
@@ -264,9 +292,9 @@ public class GenerateWells : MonoBehaviour
             float latitude = float.Parse(values[3]);
             float thickness = float.Parse(values[1]);
 
-			if (longitude >= -102.0156f && longitude <= -101.74713)
+			if (longitude >= left && longitude <= right)
 			{
-				if (latitude >= 33.47297 && latitude <= 33.69849) 
+				if (latitude >= down && latitude <= up) 
 				{
 					float xPos = (longitude - -102.0156f) * 1862.28756f;
 					float zPos = (latitude - 33.47297f) * 2217.098262f;
