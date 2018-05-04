@@ -5,7 +5,7 @@ using UnityEngine;
 public class WorldSettings : MonoBehaviour
 {
 	public GameObject runner;
-	public Terrain terrain;
+	//public GameObject terrain;
 	public Material orig_mat;
 	public Material other_mat;
 	public ParticleSystem rain;
@@ -25,17 +25,17 @@ public class WorldSettings : MonoBehaviour
 		Cursor.visible = true;
 	}
 
-	public void ToggleTerrain ()
-	{
-		if(terrain.materialTemplate == orig_mat)
-		{
-			terrain.materialTemplate = other_mat;
-		}
-		else
-		{
-			terrain.materialTemplate = orig_mat;
-		}
-	}
+	// public void ToggleTerrain ()
+	// {
+	// 	if(terrain.materialTemplate == orig_mat)
+	// 	{
+	// 		terrain.materialTemplate = other_mat;
+	// 	}
+	// 	else
+	// 	{
+	// 		terrain.materialTemplate = orig_mat;
+	// 	}
+	// }
 
 	public void ToggleWater ()
 	{

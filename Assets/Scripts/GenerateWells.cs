@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GenerateWells : MonoBehaviour
 {
@@ -12,8 +13,16 @@ public class GenerateWells : MonoBehaviour
 	public GameObject container_cube;
 	public GameObject water_cube;
     public GameObject Spring;
+    public GameObject lubbock_map;
+    public GameObject amarillo_map;
+    public GameObject lamesa_map;
+    public GameObject plainview_map;
+    public GameObject midland_map;
+
+
     public Material[] orig_mat;
 	public Material[] other_mat;
+    public Slider mainSlider;
 
 	private List<GameObject> wells = new List<GameObject>();
 	private List<GameObject> markers = new List<GameObject>();
@@ -29,12 +38,18 @@ public class GenerateWells : MonoBehaviour
 	private List<float> sts = new List<float>();
     private List<float> sts_orlen = new List<float>();
 	private float scale;
+    private string city;
+    private string datafile;
+    private float[] coor = {0,0,0,0};
    
     void Start ()
 	{
+        SetTerrain();
 		SetWells();
 		SetUGWater();
 		UpdateColors();
+
+        mainSlider = GameObject.Find("Slider").GetComponent<Slider>();
     }
 
 	void Update ()
@@ -87,19 +102,80 @@ public class GenerateWells : MonoBehaviour
 		return rescale.y;
 	}
 
+    public void callFunc()
+    {
+        // if (mainSlider.value == 1) { //Set1996(); }
+        // else if (mainSlider.value == 2) { //Set1997(); }
+        // else if (mainSlider.value == 3) { //Set1998(); }
+        // else if (mainSlider.value == 4) { //Set1999(); }
+    }
+
+    void SetTerrain()
+    {
+        TextAsset txtAsset = (TextAsset)Resources.Load("coordinates", typeof(TextAsset));
+        string[] lines = txtAsset.text.Split('\n');
+        //print(lines[1]);
+
+        txtAsset = (TextAsset)Resources.Load("currentCity", typeof(TextAsset));
+		city = "" + txtAsset.text[0] + txtAsset.text[1];
+
+        string[] coords;
+
+        if(city == "Lu")
+        {
+            GameObject terr = Instantiate(lubbock_map, new Vector3 (0,1.7f, 0), Quaternion.identity);
+            datafile = "Lubbock_optimized";
+            coords = lines[1].Split(',');
+        }
+        else if(city == "Am")
+        {
+            GameObject terr = Instantiate(amarillo_map, new Vector3 (0,1.7f, 0), Quaternion.identity);
+            datafile = "Lubbock_optimized";
+            coords = lines[1].Split(',');
+        }
+        else if(city == "La")
+        {
+            GameObject terr = Instantiate(lamesa_map, new Vector3 (0,1.7f, 0), Quaternion.identity);
+            datafile = "Lubbock_optimized";
+            coords = lines[1].Split(',');
+        }
+        else if(city == "Mi")
+        {
+            GameObject terr = Instantiate(midland_map, new Vector3 (0,1.7f, 0), Quaternion.identity);
+            datafile = "Lubbock_optimized";
+            coords = lines[1].Split(',');
+        }
+        else if(city == "Pl")
+        {
+            GameObject terr = Instantiate(plainview_map, new Vector3 (0,1.7f, 0), Quaternion.identity);
+            datafile = "Lubbock_optimized";
+            coords = lines[1].Split(',');
+        }
+        else
+        {
+            GameObject terr = Instantiate(lubbock_map, new Vector3 (0,1.7f, 0), Quaternion.identity);
+            datafile = "Lubbock_optimized";
+            coords = lines[1].Split(',');
+        }
+
+        coor[0] = float.Parse(coords[2]);
+        coor[1] = float.Parse(coords[3]);
+        coor[2] = float.Parse(coords[4]);
+        coor[3] = float.Parse(coords[5]);
+    }
+
 	void SetWells()
 	{
-        var county = "Lubbock";
-        float left = -101.9217f;
-        float right = -101.83467f;
-        float up = 33.62077f;
-        float down = 33.54782f;
+        float left = coor[0];
+        float right = coor[1];
+        float up = coor[2];
+        float down = coor[3];
 
-		TextAsset txtAsset = (TextAsset)Resources.Load(county+"_optimized", typeof(TextAsset));
+		TextAsset txtAsset = (TextAsset)Resources.Load(datafile, typeof(TextAsset));
 		string[] lines = txtAsset.text.Split('\n');
 		scale = 0.0625f;
 
-        for(int index =1;index < lines.Length-1; index++)
+        for(int index =1; index < lines.Length-1; index++)
         {
             string[] values = lines[index].Split(',');
 			float longitude,latitude,well_depth,thickness,water_el,land_el;
