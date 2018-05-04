@@ -5,17 +5,21 @@ using UnityEngine;
 public class WorldSettings : MonoBehaviour
 {
 	public GameObject runner;
-	//public GameObject terrain;
-	public Material orig_mat;
-	public Material other_mat;
+	private GameObject terrain;
+	private Material current_mat;
+	public Material transparent_mat;
 	public ParticleSystem rain;
     public AudioSource rain_sound;
-	private bool visible;
+	private bool visibleUG;
+	private bool visibleT;
 
 	// Use this for initialization
 	void Start ()
 	{
-		visible = true;
+		visibleUG = true;
+		visibleT = true;
+		terrain = runner.GetComponent<GenerateWells>().terr;
+		current_mat = terrain.GetComponentInChildren<Renderer>().material;
 		Cursor.visible = true;
 	}
 	
@@ -25,29 +29,32 @@ public class WorldSettings : MonoBehaviour
 		Cursor.visible = true;
 	}
 
-	// public void ToggleTerrain ()
-	// {
-	// 	if(terrain.materialTemplate == orig_mat)
-	// 	{
-	// 		terrain.materialTemplate = other_mat;
-	// 	}
-	// 	else
-	// 	{
-	// 		terrain.materialTemplate = orig_mat;
-	// 	}
-	// }
-
-	public void ToggleWater ()
+	public void ToggleTerrain()
 	{
-		if(visible==true)
+		if(visibleT==true)
 		{
-			runner.GetComponent<GenerateWells> ().SetVisibility(false);
-			visible = false;
+			terrain.GetComponentInChildren<Renderer>().material = transparent_mat;
+			visibleT = false;
 		}
 		else
 		{
-			runner.GetComponent<GenerateWells> ().SetVisibility(true);
-			visible = true;
+			terrain.GetComponentInChildren<Renderer>().material = current_mat;
+			visibleT = true;
+		}
+		
+	}
+
+	public void ToggleWater()
+	{
+		if(visibleUG==true)
+		{
+			runner.GetComponent<GenerateWells> ().SetUGVisibility(false);
+			visibleUG = false;
+		}
+		else
+		{
+			runner.GetComponent<GenerateWells> ().SetUGVisibility(true);
+			visibleUG = true;
 		}
 		
 	}

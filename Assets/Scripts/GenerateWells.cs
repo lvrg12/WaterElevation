@@ -21,6 +21,7 @@ public class GenerateWells : MonoBehaviour
     public GameObject lamesa_map;
     public GameObject plainview_map;
     public GameObject midland_map;
+    public GameObject terr;
 
 
     public Material[] orig_mat;
@@ -88,7 +89,7 @@ public class GenerateWells : MonoBehaviour
         }
 	}
 
-	public void SetVisibility(bool b)
+	public void SetUGVisibility(bool b)
     {
         for(int i=0; i<points.Count; i++)
         {
@@ -107,7 +108,7 @@ public class GenerateWells : MonoBehaviour
 
     public void SetYear()
     {
-        float year = mainSlider.value;
+        float year = mainSlider.value + 1995;
         print("This is the year: " + year);
     }
 
@@ -121,7 +122,6 @@ public class GenerateWells : MonoBehaviour
 		city = "" + txtAsset.text[0] + txtAsset.text[1];
 
         string[] coords;
-        GameObject terr;
 
         if(city == "Lu")
         {
@@ -242,7 +242,7 @@ public class GenerateWells : MonoBehaviour
 					var info1 = "\nLocation: "+ longitude +", "+latitude;
                     var info2 = "\nCounty: "+values[1];
 					var info3 = "\nWell Depth: "+ well_depth;
-                    var info4 = "\nLand Elevation: "+values[5];
+                    var info4 = "\nLand Elevation: "+land_el;
 					// var info5 = "\nWater Elevation: " + values [6];
                     // var info6 = "\nSaturated Thickness: " + values [7];
 					// var info7 = "\nLast Measurement On: " + values [9] + "/" + values [10] + "/" + values[11];
@@ -256,7 +256,7 @@ public class GenerateWells : MonoBehaviour
                     // box.GetComponent<DisplayInfo> ().i7 = info7;
                     for(int i = 0; i<thickness.Length; i++)
                     {
-                        box.GetComponent<DisplayInfo> ().i8[i] = (i+1995)+": "+thickness[i];
+                        box.GetComponent<DisplayInfo> ().i8[i] = (i+1995)+": "+thickness[i]+"\n";
                     }
 					marker.GetComponent<SpriteRenderer>().color = Color.green;
 
@@ -281,7 +281,7 @@ public class GenerateWells : MonoBehaviour
         float right = coor[1];
         float up = coor[2];
         float down = coor[3];
-        
+
         TextAsset txtAsset = (TextAsset)Resources.Load("raster_to_point", typeof(TextAsset));
         string[] lines = txtAsset.text.Split('\n');
 
