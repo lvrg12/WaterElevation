@@ -125,7 +125,7 @@ public class GenerateWells : MonoBehaviour
 
         if(city == "Lu")
         {
-            terr = Instantiate(lubbock_map, new Vector3 (0,-3.7f, 0), Quaternion.identity);
+            terr = Instantiate(lubbock_map, new Vector3 (0,1.9f, 0), Quaternion.identity);
             datafile = "Lubbock_optimized_May";
             coords = lines[1].Split(',');
         }
@@ -133,25 +133,25 @@ public class GenerateWells : MonoBehaviour
         {
             terr = Instantiate(amarillo_map, new Vector3 (0,1.7f, 0), Quaternion.identity);
             datafile = "Randall_optimized_May";
-            coords = lines[1].Split(',');
+            coords = lines[2].Split(',');
         }
         else if(city == "La")
         {
             terr = Instantiate(lamesa_map, new Vector3 (0,1.7f, 0), Quaternion.identity);
             datafile = "Dawson_optimized_May";
-            coords = lines[1].Split(',');
+            coords = lines[5].Split(',');
         }
         else if(city == "Mi")
         {
             terr = Instantiate(midland_map, new Vector3 (0,1.7f, 0), Quaternion.identity);
             datafile = "Midland_optimized_May";
-            coords = lines[1].Split(',');
+            coords = lines[3].Split(',');
         }
         else if(city == "Pl")
         {
             terr = Instantiate(plainview_map, new Vector3 (0,1.7f, 0), Quaternion.identity);
             datafile = "Hale_optimized_May";
-            coords = lines[1].Split(',');
+            coords = lines[4].Split(',');
         }
         else
         {
@@ -190,8 +190,8 @@ public class GenerateWells : MonoBehaviour
 			{
 				if (latitude >= down && latitude <= up)
 				{
-					float xPos = (longitude - -102.0156f) * 1862.28756f;
-					float zPos = (latitude - 33.47297f) * 2217.098262f;
+					float xPos = (longitude - left) * 500f / (right - left);
+					float zPos = (latitude - down) * 500f / (up - down);
                     float well_depth = float.Parse(values[4]);
 			        float land_el = float.Parse(values[5]);
                     string[] water_elString = new string[20];
@@ -296,8 +296,8 @@ public class GenerateWells : MonoBehaviour
 			{
 				if (latitude >= down && latitude <= up) 
 				{
-					float xPos = (longitude - -102.0156f) * 1862.28756f;
-					float zPos = (latitude - 33.47297f) * 2217.098262f;
+					float xPos = (longitude - left) * 500f / (right - left);
+					float zPos = (latitude - down) * 500f / (up - down);
                     var point = Instantiate(water_cube, new Vector3(xPos, 55f + scale*thickness/2, zPos), Quaternion.identity);
 					point.transform.localScale = new Vector3(10.8f, newYScale( point, scale * thickness ), 10.8f);
 					point.name = values [0];
