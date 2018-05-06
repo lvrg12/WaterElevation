@@ -204,15 +204,15 @@ public class GenerateWells : MonoBehaviour
                     float[] thickness = new float[num_years];
                     for(int i = 0; i<num_years; i++)
                     {
-                        water_el[i] = float.Parse(water_elString[i]);
+                        water_el[i] = float.Parse(water_elString[i]) * 0.0254f;
                         thickness[i] = float.Parse(thicknessString[i]);
                     }
 
                     //temporary
                     if(thickness[0] == 0)
                     {
-                        thickness[0] = 10.0f;
-                        water_el[0] = 3000.0f;
+                        thickness[0] = 0.005f;
+                        water_el[0] = 0.0f;
                     }
 
                     // wells represent 1995 data at start
