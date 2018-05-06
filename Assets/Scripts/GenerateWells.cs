@@ -23,7 +23,6 @@ public class GenerateWells : MonoBehaviour
     public GameObject midland_map;
     public GameObject terr;
 
-
     public Material[] orig_mat;
 	public Material[] other_mat;
     public Slider mainSlider;
@@ -50,7 +49,7 @@ public class GenerateWells : MonoBehaviour
 	{
         SetTerrain();
 		SetWells();
-		SetUGWater();
+		//SetUGWater();
 		//UpdateColors();
 
         mainSlider = GameObject.Find("Slider").GetComponent<Slider>();
@@ -131,31 +130,31 @@ public class GenerateWells : MonoBehaviour
         }
         else if(city == "Am")
         {
-            terr = Instantiate(amarillo_map, new Vector3 (0,1.7f, 0), Quaternion.identity);
+            terr = Instantiate(amarillo_map, new Vector3 (0,1.9f, 0), Quaternion.identity);
             datafile = "Randall_optimized_May";
             coords = lines[2].Split(',');
         }
         else if(city == "La")
         {
-            terr = Instantiate(lamesa_map, new Vector3 (0,1.7f, 0), Quaternion.identity);
+            terr = Instantiate(lamesa_map, new Vector3 (0,-5.4f, 0), Quaternion.identity);
             datafile = "Dawson_optimized_May";
             coords = lines[5].Split(',');
         }
         else if(city == "Mi")
         {
-            terr = Instantiate(midland_map, new Vector3 (0,1.7f, 0), Quaternion.identity);
+            terr = Instantiate(midland_map, new Vector3 (0,-5.0f, 0), Quaternion.identity);
             datafile = "Midland_optimized_May";
             coords = lines[3].Split(',');
         }
         else if(city == "Pl")
         {
-            terr = Instantiate(plainview_map, new Vector3 (0,1.7f, 0), Quaternion.identity);
+            terr = Instantiate(plainview_map, new Vector3 (0,-3.0f, 0), Quaternion.identity);
             datafile = "Hale_optimized_May";
             coords = lines[4].Split(',');
         }
         else
         {
-            terr = Instantiate(lubbock_map, new Vector3 (0,1.7f, 0), Quaternion.identity);
+            terr = Instantiate(lubbock_map, new Vector3 (0,1.9f, 0), Quaternion.identity);
             datafile = "Lubbock_optimized";
             coords = lines[1].Split(',');
         }
@@ -179,6 +178,7 @@ public class GenerateWells : MonoBehaviour
 		string[] lines = txtAsset.text.Split('\n');
         string[] linesST = txtAssetST.text.Split('\n');
 		scale = 0.0625f;
+        int num_years = 20;
 
         for(int index =1; index < lines.Length-1; index++)
         {
@@ -194,15 +194,15 @@ public class GenerateWells : MonoBehaviour
 					float zPos = (latitude - down) * 500f / (up - down);
                     float well_depth = float.Parse(values[4]);
 			        float land_el = float.Parse(values[5]);
-                    string[] water_elString = new string[20];
-                    string[] thicknessString = new string[20];
-                    Array.Copy(values,7,water_elString,0,20);
-                    Array.Copy(linesST[index].Split(','),7,thicknessString,0,20);
+                    string[] water_elString = new string[num_years];
+                    string[] thicknessString = new string[num_years];
+                    Array.Copy(values,7,water_elString,0,num_years);
+                    Array.Copy(linesST[index].Split(','),7,thicknessString,0,num_years);
 			        // float lsd = float.Parse(values[6]);
 
-                    float[] water_el = new float[20];
-                    float[] thickness = new float[20];
-                    for(int i = 0; i<20; i++)
+                    float[] water_el = new float[num_years];
+                    float[] thickness = new float[num_years];
+                    for(int i = 0; i<num_years; i++)
                     {
                         water_el[i] = float.Parse(water_elString[i]);
                         thickness[i] = float.Parse(thicknessString[i]);
@@ -254,7 +254,8 @@ public class GenerateWells : MonoBehaviour
                     // box.GetComponent<DisplayInfo> ().i5 = info5;
                     // box.GetComponent<DisplayInfo> ().i6 = info6;
                     // box.GetComponent<DisplayInfo> ().i7 = info7;
-                    for(int i = 0; i<thickness.Length; i++)
+
+                    for(int i = 0; i<num_years; i++)
                     {
                         box.GetComponent<DisplayInfo> ().i8[i] = (i+1995)+": "+thickness[i]+"\n";
                     }
@@ -268,8 +269,8 @@ public class GenerateWells : MonoBehaviour
 					// wes.Add(water_el);
 					// sts.Add(thickness);
                     // sts_orlen.Add(thickness);
-					// deps.Add(well_depth);
-					// les.Add(land_el);
+					deps.Add(well_depth);
+					les.Add(land_el);
 				}
 			}
         }

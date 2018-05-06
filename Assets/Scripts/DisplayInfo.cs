@@ -13,7 +13,7 @@ public class DisplayInfo : MonoBehaviour
     public string i5 = "";
     public string i6 = "";
     public string i7 = "";
-    public string[] i8 = {"","","","","","","","","","","","","","","","","","","",""};
+    public string[] i8 = new string[20];
 
     private Text t;
     private Text t2;

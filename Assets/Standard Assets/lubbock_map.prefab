@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 4401496414292264}
   - component: {fileID: 33076648608014588}
   - component: {fileID: 23098043399375128}
-  - component: {fileID: 154978356261137794}
+  - component: {fileID: 64347681018155870}
   m_Layer: 0
   m_Name: default
   m_TagString: Untagged
@@ -147,13 +147,17 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1203190716513780}
   m_Mesh: {fileID: 4300000, guid: cf863af10ca321d4185e929e558cceb6, type: 3}
---- !u!154 &154978356261137794
-TerrainCollider:
+--- !u!64 &64347681018155870
+MeshCollider:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1203190716513780}
-  m_Material: {fileID: 13400000, guid: e52fb17f9b1e7fd48b8955f1391d3688, type: 2}
+  m_Material: {fileID: 13400000, guid: c2815a7ab32e42c4bb42f59caacb8ec1, type: 2}
+  m_IsTrigger: 0
   m_Enabled: 1
-  m_TerrainData: {fileID: 15600000, guid: 8a0797b6b05942e4b8d62ff573183daa, type: 2}
-  m_EnableTreeColliders: 1
+  serializedVersion: 3
+  m_Convex: 0
+  m_CookingOptions: 14
+  m_SkinWidth: 0.01
+  m_Mesh: {fileID: 4300000, guid: cf863af10ca321d4185e929e558cceb6, type: 3}
