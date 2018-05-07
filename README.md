@@ -59,7 +59,7 @@ With a first person controller the user is able to navigate through the map; add
 - How to make a drop-down menu
 - How to add the background music
 - How to write script to read the data from .csv files and display the information in the panels
-- How to write script to show the year when people drag the slider
+- How to write script to show different years when people drag the slider
 
 
 ### Biggest Issues
@@ -78,10 +78,15 @@ With a first person controller the user is able to navigate through the map; add
 ### Work Distribution
 - Wenhao Ge's part:
    - Wrote the phase proposal
-   - Created a sider and wrote script to show the scale value when the slider is being slided
+   - Created a sider and wrote script to show different years when the slider is being slided
+   - Wrote script to make slider control many functions. When people drag the slider, many functions will be called according to the value of the slider
    - Made a drop-down menu and created five choices in the drop-down menu
-   - Wrote script to let the black box appear when the user hovers the mouse over the wells and let the black box disappear when the mouse leave the wells
-   - Made two panels and how the well-related information in 
+   - Wrote script to let two panels appear when the user hovers the mouse over the wells and let two panels disappear when the mouse leave the wells
+   - Made two panels 
+   - Wrote script to read the data from .csv files and display all these data in two panels 
+   - Added the background music
+   - Modified the terrain coordinates when they are generated
+   
 - Kevon's part:
     - Relearned Python
     - Wrote script to find Water Elevation for each year in each each city
