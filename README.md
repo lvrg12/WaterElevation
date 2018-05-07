@@ -40,3 +40,58 @@
 - Terrain.party (www.terrain.party)
 - Unity Asset Store
   
+  
+  
+# CS 4331-002 - Virtual Reality Project 2
+# Topic: Water Elevation
+
+
+## Video Demonstration
+   - On our current repository: https://youtu.be/hPab9evVa0s
+
+## Screenshots
+   - On our current repository: https://github.com/lvrg12/WaterElevation
+   
+## Project Report
+
+### Project Description
+
+
+### Auto-Generation
+### Main Menu
+
+### First Person Control
+
+### Functionality
+
+### We learned...
+
+
+### Biggest Issues
+- Autogeneration
+- Script writing
+- Csv files data generation
+- Measurement type
+- Measurement congurency
+- Merging all the stuff in Github
+
+## Contributors
+- Lino Virgen, Wenhao Ge, Kevon Manahan
+
+## Dynamic features/interactables
+
+### Work Distribution
+- Wenhao Ge's part:
+   - Wrote the phase proposal
+   - Created a sider and wrote script to show the scale value when the slider is being slided
+   - Made a drop-down menu and created five choices in the drop-down menu
+   - Wrote script to let the black box appear when the user hovers the mouse over the wells and let the black box disappear when the mouse leave the wells
+   - Made two panels and how the well-related information in 
+- Kevon's part:
+- Lino's part:
+
+### References
+- Texas Water Development Board (https://www.twdb.texas.gov/groundwater/data/gwdbrpt.asp)
+- iDataVisualizationLab at Texas Tech University (https://github.com/iDataVisualizationLab/SaturatedThickness)
+- Terrain.party (www.terrain.party)
+- Unity Asset Store
