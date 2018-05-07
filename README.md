@@ -74,6 +74,7 @@ With a first person controller the user is able to navigate through the map; add
 - Lino Virgen, Wenhao Ge, Kevon Manahan
 
 ## Dynamic features/interactables
+There's a main menu when you begin the game that allows the player to select which city will be used. Whenever you hover the mouse over the well from within the game, it will display the information about each well. Also there is a User Interface which allows the player to cycle between cameras(Main, Elevation, Aerial, Slider, ToggleTerrain, TEST RAIN, TEST DROUGHT) by clicking each button respectively.
 
 ### Work Distribution
 - Wenhao Ge's part:
