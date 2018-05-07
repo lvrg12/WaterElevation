@@ -1,14 +1,7 @@
 sceneSetups:
 - path: Assets/Project2.unity
-<<<<<<< HEAD
   isLoaded: 1
   isActive: 1
 - path: Assets/StartMenu.unity
-  isLoaded: 1
-=======
   isLoaded: 0
->>>>>>> 796e3cdf45ed30b3e38e41ad8366e0d549fe8b67
   isActive: 0
-- path: Assets/StartMenu.unity
-  isLoaded: 1
-  isActive: 1
