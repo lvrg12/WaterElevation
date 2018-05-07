@@ -66,6 +66,10 @@
 ### Functionality
 
 ### We learned...
+- How to write Python code
+- How to read CSV files
+- How to calculate Water Elevation
+- How Water Elevation, Saturated Thickness, and LSD relate to one another
 
 
 ### Biggest Issues
@@ -73,7 +77,7 @@
 - Script writing
 - Csv files data generation
 - Measurement type
-- Measurement congurency
+- Measurement congruency
 - Merging all the stuff in Github
 
 ## Contributors
@@ -89,6 +93,10 @@
    - Wrote script to let the black box appear when the user hovers the mouse over the wells and let the black box disappear when the mouse leave the wells
    - Made two panels and how the well-related information in 
 - Kevon's part:
+    - Wrote script to find Water Elevation for each year in each each city
+    - Wrote script to find Saturated Thickness for each year in each city
+    - Added lighting to all cities
+    - Edited the Main Menu
 - Lino's part:
 
 ### References
