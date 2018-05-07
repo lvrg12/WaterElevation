@@ -37,7 +37,7 @@ public class DisplayInfo : MonoBehaviour
         t2.enabled = true;
 
         t.text = i1+i2+i3+i4;
-        string i8All = "";
+        string i8All = "Saturated Thickness\n";
 
         for(int i = 0; i<i8.Length; i++)
         {

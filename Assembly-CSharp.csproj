@@ -60,6 +60,7 @@
      <Compile Include="Assets\Scripts\FirstPersonController.cs" />
      <Compile Include="Assets\Scripts\GenerateWells.cs" />
      <Compile Include="Assets\Scripts\MainMenu.cs" />
+     <Compile Include="Assets\Scripts\ShowValue.cs" />
      <Compile Include="Assets\Scripts\Teletransport.cs" />
      <Compile Include="Assets\Scripts\WorldSettings.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01.cs" />

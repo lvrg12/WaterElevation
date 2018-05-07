@@ -35,14 +35,14 @@ public class GenerateWells : MonoBehaviour
     private List<GameObject> points = new List<GameObject>();
 	private List<float> points_orlen = new List<float>();
     private List<float> points_cur = new List<float>();
-	private List<float> wes = new List<float>();
+	private List<List<float>> wes = new List<List<float>>();
 	private List<float> deps = new List<float>();
 	private List<float> les = new List<float>();
-	private List<float> sts = new List<float>();
-    private List<float> sts_orlen = new List<float>();
+	private List<List<float>> sts = new List<List<float>>();
 	private float scale;
     private string city;
     private string datafile;
+    private int currentYearIndex;
     private float[] coor = {0,0,0,0};
    
     void Start ()
@@ -50,25 +50,26 @@ public class GenerateWells : MonoBehaviour
         SetTerrain();
 		SetWells();
 		//SetUGWater();
-		//UpdateColors();
+		UpdateColors();
 
         mainSlider = GameObject.Find("Slider").GetComponent<Slider>();
     }
-
-	void Update ()
-	{
-		
-	}
 
 	public void UpdateColors()
 	{
 		float a,b,x;
 		for(int i=0; i<wells.Count; i++)
         {
-			a = wes[i];
+			a = wes[i][currentYearIndex];
 			x = les[i]-deps[i];
-			b = wes[i]-sts[i];
-            if(x < a && b < x)
+			b = wes[i][currentYearIndex]-sts[i][currentYearIndex];
+
+            if(wes[i][currentYearIndex] == 0.0f)
+			{
+				markers[i].GetComponent<SpriteRenderer>().color = Color.black;
+                depths[i].GetComponent<Renderer>().materials = orig_mat;
+			}            
+            else if(x < a && b < x)
 			{
 				markers[i].GetComponent<SpriteRenderer>().color = Color.green;
                 depths[i].GetComponent<Renderer>().materials = orig_mat;
@@ -78,13 +79,6 @@ public class GenerateWells : MonoBehaviour
 				markers[i].GetComponent<SpriteRenderer>().color = Color.red;
                 depths[i].GetComponent<Renderer>().materials = other_mat;
 			}
-
-            sts[i] = sts_orlen[i];
-        }
-
-        for(int i=0; i<points.Count; i++)
-        {
-            points_cur[i] = points_orlen[i];
         }
 	}
 
@@ -107,8 +101,18 @@ public class GenerateWells : MonoBehaviour
 
     public void SetYear()
     {
-        float year = mainSlider.value + 1995;
-        print("This is the year: " + year);
+        currentYearIndex = (int)mainSlider.value;
+
+        for(int i=0; i<waters.Count; i++)
+        {
+            var x = waters[i].transform.localPosition.x;
+            var y = scale*wes[i][currentYearIndex];
+            var z = waters[i].transform.localPosition.z;
+            float w = newYScale(waters[i], scale * sts[i][currentYearIndex]);
+            waters[i].transform.localPosition = new Vector3(x,y-w,z);
+        }
+
+        UpdateColors();
     }
 
     void SetTerrain()
@@ -200,28 +204,27 @@ public class GenerateWells : MonoBehaviour
                     Array.Copy(linesST[index].Split(','),7,thicknessString,0,num_years);
 			        // float lsd = float.Parse(values[6]);
 
-                    float[] water_el = new float[num_years];
-                    float[] thickness = new float[num_years];
+                    List<float> water_el = new List<float>();
+                    List<float> thickness = new List<float>();
                     for(int i = 0; i<num_years; i++)
                     {
-                        water_el[i] = float.Parse(water_elString[i]) * 0.0254f;
-                        thickness[i] = float.Parse(thicknessString[i]);
-                    }
+                        water_el.Add(float.Parse(water_elString[i]));
 
-                    //temporary
-                    if(thickness[0] == 0)
-                    {
-                        thickness[0] = 0.005f;
-                        water_el[0] = 0.0f;
+                        var x = float.Parse(water_elString[i]);
+                        if(x == 0.0)
+                        {
+                            x = 0.005f;
+                        }
+                        thickness.Add(x/3.28084f);
                     }
 
                     // wells represent 1995 data at start
-					GameObject well = Instantiate(water_well, new Vector3 (xPos, scale*land_el+3.5f, zPos), Quaternion.identity);
-					GameObject box = Instantiate(container_cube, new Vector3 (xPos, scale*land_el+3.5f, zPos), Quaternion.identity);
+					GameObject well = Instantiate(water_well, new Vector3 (xPos, scale * land_el+3.5f, zPos), Quaternion.identity);
+					GameObject box = Instantiate(container_cube, new Vector3 (xPos, scale * land_el+3.5f, zPos), Quaternion.identity);
 					GameObject marker = Instantiate(well_marker, new Vector3 (xPos, 150f, zPos), Quaternion.Euler(new Vector3(80,0,0)));
                     GameObject Wspring = Instantiate(Spring, new Vector3(xPos, scale * land_el, zPos), Quaternion.identity);
-					GameObject depth = Instantiate(depth_object, new Vector3(xPos, scale*land_el , zPos), Quaternion.identity);
-					GameObject water = Instantiate(water_cyl, new Vector3(xPos, scale*water_el[0], zPos), Quaternion.identity);
+					GameObject depth = Instantiate(depth_object, new Vector3(xPos, scale * land_el , zPos), Quaternion.identity);
+					GameObject water = Instantiate(water_cyl, new Vector3(xPos, scale * water_el[0], zPos), Quaternion.identity);
 
                     depth.transform.localScale = new Vector3(0.75f, scale * well_depth, 0.75f);
 					depth.transform.localPosition = new Vector3(xPos,scale*land_el,zPos);
@@ -259,16 +262,14 @@ public class GenerateWells : MonoBehaviour
                     {
                         box.GetComponent<DisplayInfo> ().i8[i] = (i+1995)+": "+thickness[i]+"\n";
                     }
-					marker.GetComponent<SpriteRenderer>().color = Color.green;
 
 					wells.Add(well);
 					markers.Add(marker);
 					depths.Add(depth);
 					waters.Add(water);
 					boxs.Add(box);
-					// wes.Add(water_el);
-					// sts.Add(thickness);
-                    // sts_orlen.Add(thickness);
+					wes.Add(water_el);
+					sts.Add(thickness);
 					deps.Add(well_depth);
 					les.Add(land_el);
 				}
@@ -310,221 +311,4 @@ public class GenerateWells : MonoBehaviour
         }
     }
 
-	public void SetSpring()
-    {
-        TextAsset txtAsset = (TextAsset)Resources.Load("precipitation_data", typeof(TextAsset));
-        string[] lines = txtAsset.text.Split(new char[] { '\n' });
-        string[] values = lines[4].Split(',');
-        
-        float numVal1, numVal2, numVal3, numVal4, numVal5, numVal6, numVal7, numVal8, numVal9, numVal10, numVal11, numVal12;
-        float.TryParse(values[1], out numVal1);
-        float.TryParse(values[2], out numVal2);
-        float.TryParse(values[3], out numVal3);
-        float.TryParse(values[4], out numVal4);
-        float.TryParse(values[5], out numVal5);
-        float.TryParse(values[6], out numVal6);
-        float.TryParse(values[7], out numVal7);
-        float.TryParse(values[8], out numVal8);
-        float.TryParse(values[9], out numVal9);
-        float.TryParse(values[10], out numVal10);
-        float.TryParse(values[11], out numVal11);
-        float.TryParse(values[12], out numVal12);
-
-        // calculate the average precipitation data of four seasons
-        float average_Spring = (numVal1 + numVal11 + numVal12) / 3 * 0.0254f;
-       
-		for(int i=0; i<points.Count; i++)
-        {
-            points_cur[i] = points_orlen[i] + average_Spring;
-			newYScale(points[i], scale * points_cur[i]);
-        }
-
-		for(int i=0; i<wells.Count; i++)
-        {
-            sts[i] = sts_orlen[i] + average_Spring;
-			newYScale(waters[i], scale * sts[i]);
-            boxs[i].GetComponent<DisplayInfo> ().i6 = "\nSaturated Thickness: " + sts[i];
-        }
-        
-		UpdateColors();
-    }
- 
-    public void SetSummer()
-    {
-        TextAsset txtAsset = (TextAsset)Resources.Load("precipitation_data", typeof(TextAsset));
-        string[] lines = txtAsset.text.Split(new char[] { '\n' });
-        string[] values = lines[4].Split(',');
-
-        float numVal1, numVal2, numVal3, numVal4, numVal5, numVal6, numVal7, numVal8, numVal9, numVal10, numVal11, numVal12;
-        float.TryParse(values[1], out numVal1);
-        float.TryParse(values[2], out numVal2);
-        float.TryParse(values[3], out numVal3);
-        float.TryParse(values[4], out numVal4);
-        float.TryParse(values[5], out numVal5);
-        float.TryParse(values[6], out numVal6);
-        float.TryParse(values[7], out numVal7);
-        float.TryParse(values[8], out numVal8);
-        float.TryParse(values[9], out numVal9);
-        float.TryParse(values[10], out numVal10);
-        float.TryParse(values[11], out numVal11);
-        float.TryParse(values[12], out numVal12);
-
-        // calculate the average precipitation data of four seasons
-       
-        float average_Summer = (numVal2 + numVal3 + numVal4) / 3 * 0.0254f;
-
-		for(int i=0; i<points.Count; i++)
-        {
-            points_cur[i] = points_orlen[i] + average_Summer;
-			newYScale(points[i], scale * points_cur[i]);
-        }
-
-		for(int i=0; i<wells.Count; i++)
-        {
-            sts[i] = sts_orlen[i] + average_Summer;
-			newYScale(waters[i], scale * sts[i]);
-            boxs[i].GetComponent<DisplayInfo> ().i6 = "\nSaturated Thickness: " + sts[i];
-        }
-
-		UpdateColors();
-
-    }
-
-    public void SetFall()
-    {
-        TextAsset txtAsset = (TextAsset)Resources.Load("precipitation_data", typeof(TextAsset));
-        string[] lines = txtAsset.text.Split(new char[] { '\n' });
-        string[] values = lines[4].Split(',');
-
-        float numVal1, numVal2, numVal3, numVal4, numVal5, numVal6, numVal7, numVal8, numVal9, numVal10, numVal11, numVal12;
-        float.TryParse(values[1], out numVal1);
-        float.TryParse(values[2], out numVal2);
-        float.TryParse(values[3], out numVal3);
-        float.TryParse(values[4], out numVal4);
-        float.TryParse(values[5], out numVal5);
-        float.TryParse(values[6], out numVal6);
-        float.TryParse(values[7], out numVal7);
-        float.TryParse(values[8], out numVal8);
-        float.TryParse(values[9], out numVal9);
-        float.TryParse(values[10], out numVal10);
-        float.TryParse(values[11], out numVal11);
-        float.TryParse(values[12], out numVal12);
-
-        // calculate the average precipitation data of four seasons
-       
-        float average_Fall = (numVal5 + numVal6 + numVal7) / 3 * 0.0254f;
-        
-        for(int i=0; i<points.Count; i++)
-        {
-            points_cur[i] = points_orlen[i] + average_Fall;
-			newYScale(points[i], scale * points_cur[i]);
-        }
-
-		for(int i=0; i<wells.Count; i++)
-        {
-            sts[i] = sts_orlen[i] + average_Fall;
-			newYScale(waters[i], scale * sts[i]);
-            boxs[i].GetComponent<DisplayInfo> ().i6 = "\nSaturated Thickness: " + sts[i];
-        }
-
-		UpdateColors();
-    }
-
-    public void SetWinter()
-    {
-        TextAsset txtAsset = (TextAsset)Resources.Load("precipitation_data", typeof(TextAsset));
-        string[] lines = txtAsset.text.Split(new char[] { '\n' });
-        string[] values = lines[4].Split(',');
-
-        float numVal1, numVal2, numVal3, numVal4, numVal5, numVal6, numVal7, numVal8, numVal9, numVal10, numVal11, numVal12;
-        float.TryParse(values[1], out numVal1);
-        float.TryParse(values[2], out numVal2);
-        float.TryParse(values[3], out numVal3);
-        float.TryParse(values[4], out numVal4);
-        float.TryParse(values[5], out numVal5);
-        float.TryParse(values[6], out numVal6);
-        float.TryParse(values[7], out numVal7);
-        float.TryParse(values[8], out numVal8);
-        float.TryParse(values[9], out numVal9);
-        float.TryParse(values[10], out numVal10);
-        float.TryParse(values[11], out numVal11);
-        float.TryParse(values[12], out numVal12);
-
-        // calculate the average precipitation data of four seasons
-        
-        float average_Winter = (numVal8 + numVal9 + numVal10) / 3 * 0.0254f;
-
-        for(int i=0; i<points.Count; i++)
-        {
-            points_cur[i] = points_orlen[i] + average_Winter;
-			newYScale(points[i], scale * points_cur[i]);
-        }
-
-		for(int i=0; i<wells.Count; i++)
-        {
-            sts[i] = sts_orlen[i] + average_Winter;
-			newYScale(waters[i], scale * sts[i]);
-            boxs[i].GetComponent<DisplayInfo> ().i6 = "\nSaturated Thickness: " + sts[i];
-        }
-
-		UpdateColors();
-    }
-
-    public void SetRainTest()
-    {        
-        float average_test = 60.0f;
-
-        for(int i=0; i<points.Count; i++)
-        {
-            points_cur[i] = points_orlen[i] + average_test;
-			newYScale(points[i], scale * points_cur[i]);
-        }
-
-		for(int i=0; i<wells.Count; i++)
-        {
-            sts[i] = sts_orlen[i] + average_test;
-			newYScale(waters[i], scale * sts[i]);
-            boxs[i].GetComponent<DisplayInfo> ().i6 = "\nSaturated Thickness: " + sts[i];
-        }
-
-		UpdateColors();
-    }
-
-    public void SetDroughtTest()
-    {        
-        float average_test = -80.0f;
-
-        for(int i=0; i<points.Count; i++)
-        {
-            if(points_orlen[i] + average_test <= 0)
-                average_test = points_orlen[i] * -1 + 0.5f;
-
-            points_cur[i] = points_orlen[i] + average_test;
-			newYScale(points[i], scale * points_cur[i]);
-        }
-
-        average_test = -80.0f;
-
-		// for(int i=0; i<wells.Count; i++)
-        // {
-        //     if(sts_orlen[i] + average_test <= 0)
-        //         average_test = sts_orlen[i] * -1 + 0.5f;
-
-        //     sts[i] = sts_orlen[i] + average_test;
-		// 	newYScale(waters[i], scale * sts[i]);
-        //     boxs[i].GetComponent<DisplayInfo> ().i6 = "\nSaturated Thickness: " + sts[i];
-        // }
-
-        for(int i=wells.Count-1; i>=0; i--)
-        {
-            if(sts_orlen[i] + average_test <= 0)
-                average_test = sts_orlen[i] * -1 + 0.5f;
-
-            sts[i] = sts_orlen[i] + average_test;
-			newYScale(waters[i], scale * sts[i]);
-            boxs[i].GetComponent<DisplayInfo> ().i6 = "\nSaturated Thickness: " + sts[i];
-        }
-
-		UpdateColors();
-    }
 }
