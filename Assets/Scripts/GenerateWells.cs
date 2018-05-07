@@ -21,11 +21,13 @@ public class GenerateWells : MonoBehaviour
     public GameObject lamesa_map;
     public GameObject plainview_map;
     public GameObject midland_map;
-    public GameObject terr;
 
     public Material[] orig_mat;
 	public Material[] other_mat;
+    private Material current_mat;
+	public Material transparent_mat;
     public Slider mainSlider;
+    private GameObject terr;
 
 	private List<GameObject> wells = new List<GameObject>();
 	private List<GameObject> markers = new List<GameObject>();
@@ -88,6 +90,20 @@ public class GenerateWells : MonoBehaviour
         {
             points[i].SetActive(b);
         }
+    }
+
+    public void SetTerrainVisibility(bool b)
+    {
+        if(b==true)
+		{
+            print("visible");
+			terr.GetComponentInChildren<Renderer>().material = current_mat;
+		}
+		else
+		{
+            print("invisible");
+			terr.GetComponentInChildren<Renderer>().material = transparent_mat;
+		}
     }
 
 	public float newYScale(GameObject theGameObject, float newSize)
@@ -163,6 +179,7 @@ public class GenerateWells : MonoBehaviour
             coords = lines[1].Split(',');
         }
 
+        current_mat = terr.GetComponentInChildren<Renderer>().material;
         terr.name = txtAsset.text;
         coor[0] = float.Parse(coords[2]);
         coor[1] = float.Parse(coords[3]);

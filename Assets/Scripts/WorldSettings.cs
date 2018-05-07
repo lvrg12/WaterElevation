@@ -18,8 +18,6 @@ public class WorldSettings : MonoBehaviour
 	{
 		visibleUG = true;
 		visibleT = true;
-		terrain = runner.GetComponent<GenerateWells>().terr;
-		current_mat = terrain.GetComponentInChildren<Renderer>().material;
 		Cursor.visible = true;
 	}
 	
@@ -33,12 +31,12 @@ public class WorldSettings : MonoBehaviour
 	{
 		if(visibleT==true)
 		{
-			terrain.GetComponentInChildren<Renderer>().material = transparent_mat;
+			runner.GetComponent<GenerateWells>().SetTerrainVisibility(true);
 			visibleT = false;
 		}
 		else
 		{
-			terrain.GetComponentInChildren<Renderer>().material = current_mat;
+			runner.GetComponent<GenerateWells>().SetTerrainVisibility(false);
 			visibleT = true;
 		}
 		

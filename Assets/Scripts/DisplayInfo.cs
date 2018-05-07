@@ -14,9 +14,11 @@ public class DisplayInfo : MonoBehaviour
     public string i6 = "";
     public string i7 = "";
     public string[] i8 = new string[20];
+    
 
     private Text t;
     private Text t2;
+    private Canvas CanvasObject;
 
     void Start ()
     {
@@ -25,6 +27,8 @@ public class DisplayInfo : MonoBehaviour
         //box.enabled = false;
         t.enabled = false;
         t2.enabled = false;
+        CanvasObject = GameObject.Find("UserCanvas").GetComponent<Canvas>();
+        CanvasObject.GetComponent<Canvas>().enabled = false;
 
         if (gameObject.GetComponent<BoxCollider>() == null)
             gameObject.AddComponent<BoxCollider>();
@@ -32,14 +36,15 @@ public class DisplayInfo : MonoBehaviour
 
     void OnMouseOver()
     {
-        //box.SetActive(true);
+        CanvasObject.enabled = true;
         t.enabled = true;
         t2.enabled = true;
+        //CanvasObject.enabled = true;
 
         t.text = i1+i2+i3+i4;
         string i8All = "Saturated Thickness\n";
 
-        for(int i = 0; i<i8.Length; i++)
+        for (int i = 0; i<i8.Length; i++)
         {
             i8All += i8[i];
         }
@@ -49,8 +54,9 @@ public class DisplayInfo : MonoBehaviour
 
     void OnMouseExit()
     {
+        CanvasObject.enabled = false;
         t.enabled = false;
         t2.enabled = false;
-        //box.SetActive(false);
+        //CanvasObject.enabled = false;
     }
 }

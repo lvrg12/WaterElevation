@@ -57,11 +57,13 @@
      <Compile Include="Assets\Scripts\CameraSwitch.cs" />
      <Compile Include="Assets\Scripts\CursorShower.cs" />
      <Compile Include="Assets\Scripts\DisplayInfo.cs" />
+     <Compile Include="Assets\Scripts\DontDestroy.cs" />
      <Compile Include="Assets\Scripts\FirstPersonController.cs" />
      <Compile Include="Assets\Scripts\GenerateWells.cs" />
      <Compile Include="Assets\Scripts\MainMenu.cs" />
      <Compile Include="Assets\Scripts\ShowValue.cs" />
      <Compile Include="Assets\Scripts\Teletransport.cs" />
+     <Compile Include="Assets\Scripts\ToggleCanvas.cs" />
      <Compile Include="Assets\Scripts\WorldSettings.cs" />
      <Compile Include="Assets\SetInactive.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01.cs" />
