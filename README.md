@@ -93,6 +93,7 @@
    - Wrote script to let the black box appear when the user hovers the mouse over the wells and let the black box disappear when the mouse leave the wells
    - Made two panels and how the well-related information in 
 - Kevon's part:
+    - Relearned Python
     - Wrote script to find Water Elevation for each year in each each city
     - Wrote script to find Saturated Thickness for each year in each city
     - Added lighting to all cities
