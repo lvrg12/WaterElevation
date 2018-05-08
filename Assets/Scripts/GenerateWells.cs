@@ -142,7 +142,7 @@ public class GenerateWells : MonoBehaviour
 
         if(city == "Lu")
         {
-            terr = Instantiate(lubbock_map, new Vector3 (0,1.9f, 0), Quaternion.identity);
+            terr = Instantiate(lubbock_map, new Vector3 (0,-2.0f, 0), Quaternion.identity);
             datafile = "Lubbock_optimized_May";
             coords = lines[1].Split(',');
         }
@@ -177,7 +177,7 @@ public class GenerateWells : MonoBehaviour
             coords = lines[1].Split(',');
         }
 
-        current_mat = terr.GetComponentInChildren<Renderer>().material;
+        current_mat = terr.transform.GetChild(0).gameObject.GetComponent<Renderer>().material;
         terr.name = txtAsset.text;
         coor[0] = float.Parse(coords[2]);
         coor[1] = float.Parse(coords[3]);
