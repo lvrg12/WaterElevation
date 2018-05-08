@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class DisplayInfo : MonoBehaviour
 {
     public bool isClicked = false;
+    public string i0 = "ID";
     public string i1 = "Location";
     public string i2 = "County";
     public string i3 = "Well Depth";
@@ -24,7 +25,6 @@ public class DisplayInfo : MonoBehaviour
     {
         t = GameObject.Find("Info").GetComponentInChildren<Text>();
         t2 = GameObject.Find("Info2").GetComponentInChildren<Text>();
-        //box.enabled = false;
         t.enabled = false;
         t2.enabled = false;
         CanvasObject = GameObject.Find("UserCanvas").GetComponent<Canvas>();
@@ -39,7 +39,6 @@ public class DisplayInfo : MonoBehaviour
         CanvasObject.enabled = true;
         t.enabled = true;
         t2.enabled = true;
-        //CanvasObject.enabled = true;
 
         t.text = i1+i2+i3+i4;
         string i8All = "Saturated Thickness\n";
@@ -57,6 +56,5 @@ public class DisplayInfo : MonoBehaviour
         CanvasObject.enabled = false;
         t.enabled = false;
         t2.enabled = false;
-        //CanvasObject.enabled = false;
     }
 }

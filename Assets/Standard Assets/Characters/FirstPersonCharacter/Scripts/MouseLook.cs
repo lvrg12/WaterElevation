@@ -78,10 +78,14 @@ namespace UnityStandardAssets.Characters.FirstPerson
             if(Input.GetKeyUp(KeyCode.Escape))
             {
                 m_cursorIsLocked = false;
+                XSensitivity = 0f;
+                YSensitivity = 0f;
             }
             else if(Input.GetMouseButtonUp(0))
             {
                 m_cursorIsLocked = true;
+                XSensitivity = 2f;
+                YSensitivity = 2f;
             }
 
             if (m_cursorIsLocked)

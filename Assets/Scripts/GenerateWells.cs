@@ -96,13 +96,11 @@ public class GenerateWells : MonoBehaviour
     {
         if(b==true)
 		{
-            print("visible");
-			terr.GetComponentInChildren<Renderer>().material = current_mat;
+            terr.transform.GetChild(0).gameObject.GetComponent<Renderer>().material = current_mat;
 		}
 		else
 		{
-            print("invisible");
-			terr.GetComponentInChildren<Renderer>().material = transparent_mat;
+            terr.transform.GetChild(0).gameObject.GetComponent<Renderer>().material = transparent_mat;
 		}
     }
 
@@ -259,7 +257,8 @@ public class GenerateWells : MonoBehaviour
 					water.name = values[0]+"_st";
                     Wspring.name = values[0]+"_spring";
 
-					var info1 = "\nLocation: "+ longitude +", "+latitude;
+					var info0 = "ID: "+values[0];
+                    var info1 = "\nLocation: "+ longitude +", "+latitude;
                     var info2 = "\nCounty: "+values[1];
 					var info3 = "\nWell Depth: "+ well_depth;
                     var info4 = "\nLand Elevation: "+land_el;
@@ -267,7 +266,8 @@ public class GenerateWells : MonoBehaviour
                     // var info6 = "\nSaturated Thickness: " + values [7];
 					// var info7 = "\nLast Measurement On: " + values [9] + "/" + values [10] + "/" + values[11];
 
-					box.GetComponent<DisplayInfo> ().i1 = info1;
+					box.GetComponent<DisplayInfo> ().i0 = info0;
+                    box.GetComponent<DisplayInfo> ().i1 = info1;
                     box.GetComponent<DisplayInfo> ().i2 = info2;
                     box.GetComponent<DisplayInfo> ().i3 = info3;
                     box.GetComponent<DisplayInfo> ().i4 = info4;
