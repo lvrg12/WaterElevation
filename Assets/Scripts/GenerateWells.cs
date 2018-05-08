@@ -27,6 +27,7 @@ public class GenerateWells : MonoBehaviour
     private Material current_mat;
 	public Material transparent_mat;
     public Slider mainSlider;
+    public Toggle keep;
     private GameObject terr;
 
 	private List<GameObject> wells = new List<GameObject>();
@@ -119,11 +120,27 @@ public class GenerateWells : MonoBehaviour
 
         for(int i=0; i<waters.Count; i++)
         {
-            var x = waters[i].transform.localPosition.x;
-            var y = scale*wes[i][currentYearIndex];
-            var z = waters[i].transform.localPosition.z;
-            float w = newYScale(waters[i], scale * sts[i][currentYearIndex]);
-            waters[i].transform.localPosition = new Vector3(x,y-w,z);
+            if(keep.isOn == true && wes[i][currentYearIndex] != 0)
+            {
+                var x = waters[i].transform.localPosition.x;
+                var y = scale*wes[i][currentYearIndex];
+                var z = waters[i].transform.localPosition.z;
+                float w = newYScale(waters[i], scale * sts[i][currentYearIndex]);
+                waters[i].transform.localPosition = new Vector3(x,y-w,z);
+            }
+            else if (keep.isOn == false)
+            {
+                var x = waters[i].transform.localPosition.x;
+                var y = scale*wes[i][currentYearIndex];
+                var z = waters[i].transform.localPosition.z;
+                float w = newYScale(waters[i], scale * sts[i][currentYearIndex]);
+                waters[i].transform.localPosition = new Vector3(x,y-w,z);
+            }
+            else
+            {
+                continue;
+            }
+
         }
 
         UpdateColors();
