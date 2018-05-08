@@ -180,7 +180,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Keep old data
+  m_Text: Keep previous data
 --- !u!222 &21373378
 CanvasRenderer:
   m_ObjectHideFlags: 0
