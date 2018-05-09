@@ -81,6 +81,55 @@ With a first person controller the user is able to navigate through the map; add
 - Measurement congruency
 - Merging all project versions in Github
 
+In C# functions expalined below, the following variables are used to explain how the data is being read from the .csv files and the variables are also used to explain how did we write the script to generate different terrains when people choose different cities.
+... C#...
+TextAsset txtAsset = (TextAsset)Resources.Load("coordinates", typeof(TextAsset));
+        string[] lines = txtAsset.text.Split('\n');
+        
+
+txtAsset = (TextAsset)Resources.Load("currentCity", typeof(TextAsset));
+		city = "" + txtAsset.text[0] + txtAsset.text[1];
+
+        string[] coords;
+
+        if(city == "Lu")
+        {
+            terr = Instantiate(lubbock_map, new Vector3 (0,-2.0f, 0), Quaternion.identity);
+            datafile = "Lubbock_optimized_May";
+            coords = lines[1].Split(',');
+        }
+        else if(city == "Am")
+        {
+            terr = Instantiate(amarillo_map, new Vector3 (0,1.9f, 0), Quaternion.identity);
+            datafile = "Randall_optimized_May";
+            coords = lines[2].Split(',');
+        }
+        else if(city == "La")
+        {
+            terr = Instantiate(lamesa_map, new Vector3 (0,-5.4f, 0), Quaternion.identity);
+            datafile = "Dawson_optimized_May";
+            coords = lines[5].Split(',');
+        }
+        else if(city == "Mi")
+        {
+            terr = Instantiate(midland_map, new Vector3 (0,-5.0f, 0), Quaternion.identity);
+            datafile = "Midland_optimized_May";
+            coords = lines[3].Split(',');
+        }
+        else if(city == "Pl")
+        {
+            terr = Instantiate(plainview_map, new Vector3 (0,-3.0f, 0), Quaternion.identity);
+            datafile = "Hale_optimized_May";
+            coords = lines[4].Split(',');
+        }
+        else
+        {
+            terr = Instantiate(lubbock_map, new Vector3 (0,1.9f, 0), Quaternion.identity);
+            datafile = "Lubbock_optimized";
+            coords = lines[1].Split(',');
+        }
+        
+        
 ## Contributors
 - Lino Virgen, Wenhao Ge, Kevon Manahan
 
