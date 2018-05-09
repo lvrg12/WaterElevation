@@ -128,7 +128,33 @@ txtAsset = (TextAsset)Resources.Load("currentCity", typeof(TextAsset));
             datafile = "Lubbock_optimized";
             coords = lines[1].Split(',');
         }
-        
+	
+The following functions are used to explain how did we write script to let each well display the information when the mouse hovers over well.
+....C#...
+
+    void OnMouseOver()
+    {
+        CanvasObject.enabled = true;
+        t.enabled = true;
+        t2.enabled = true;
+
+        t.text = i1+i2+i3+i4;
+        string i8All = "Saturated Thickness\n";
+
+        for (int i = 0; i<i8.Length; i++)
+        {
+            i8All += i8[i];
+        }
+
+        t2.text = i8All;
+    }
+
+    void OnMouseExit()
+    {
+        CanvasObject.enabled = false;
+        t.enabled = false;
+        t2.enabled = false;
+    }
         
 ## Contributors
 - Lino Virgen, Wenhao Ge, Kevon Manahan
