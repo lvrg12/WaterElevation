@@ -83,11 +83,12 @@ With a first person controller the user is able to navigate through the map; add
 
 In C# functions expalined below, the following variables are used to explain how the data is being read from the .csv files and the variables are also used to explain how did we write the script to generate different terrains when people choose different cities.
 ... C#...
-TextAsset txtAsset = (TextAsset)Resources.Load("coordinates", typeof(TextAsset));
+
+       TextAsset txtAsset = (TextAsset)Resources.Load("coordinates", typeof(TextAsset));
         string[] lines = txtAsset.text.Split('\n');
         
 
-txtAsset = (TextAsset)Resources.Load("currentCity", typeof(TextAsset));
+        txtAsset = (TextAsset)Resources.Load("currentCity", typeof(TextAsset));
 		city = "" + txtAsset.text[0] + txtAsset.text[1];
 
         string[] coords;
@@ -155,6 +156,22 @@ The following functions are used to explain how did we write script to let each 
         t.enabled = false;
         t2.enabled = false;
     }
+    
+The following functions are used to explain how are different years being displayed when peope slide the slider
+...C#...
+
+     Text percentageText;
+
+    void Start()
+    {
+        percentageText = GetComponent<Text>();
+    }
+
+    public void textUpdate(float value)
+    {
+        percentageText.text = (Mathf.RoundToInt(value) + 1995).ToString();
+
+    }
         
 ## Contributors
 - Lino Virgen, Wenhao Ge, Kevon Manahan
@@ -173,6 +190,7 @@ There's a main menu when you begin the game that allows the player to select whi
   - Wrote script to read the data from .csv files and display all these data in two panels 
   - Added the background music
   - Modified the terrain coordinates when they are generated
+  - Wrote a big part in the project report
    
 - Kevon's part:
   - Relearned Python
