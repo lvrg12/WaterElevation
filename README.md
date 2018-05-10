@@ -71,6 +71,8 @@ With a first person controller the user is able to navigate through the map; add
 - How to add the background music
 - How to write script to read the data from .csv files and display the information in the panels
 - How to write script to show different years when people drag the slider
+- How to add some dynamic pictures to the project report
+- How to write script to make different terrains generated according to which city user choose to generate 
 
 
 ### Biggest Issues
