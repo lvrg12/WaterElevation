@@ -73,6 +73,8 @@ With a first person controller the user is able to navigate through the map; add
 - How to write script to show different years when people drag the slider
 - How to add some dynamic pictures to the project report
 - How to write script to make different terrains generated according to which city user choose to generate 
+- How to add Google map to the terrain
+- How to write script to toggle the terrain
 
 
 ### Biggest Issues
