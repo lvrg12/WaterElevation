@@ -73,8 +73,9 @@ With a first person controller the user is able to navigate through the map; add
 - How to write script to show different years when people drag the slider
 - How to add some dynamic pictures to the project report
 - How to write script to make different terrains generated according to which city user choose to generate 
-- How to add Google map to the terrain
+- How to add the satellite map to the height map
 - How to write script to toggle the terrain
+- How to write script to toggle the water
 
 
 ### Biggest Issues
@@ -176,6 +177,48 @@ The following functions are used to explain how are different years being displa
         percentageText.text = (Mathf.RoundToInt(value) + 1995).ToString();
 
     }
+The following functions are used to explain how did we add background music and also explain why does the music last forever.
+....C#....
+
+    public class DontDestroy : MonoBehaviour {
+
+     void Awake()
+    {
+        DontDestroyOnLoad(transform.gameObject);   
+    }
+    }
+The following functions are used to show how did we write scripts to toggle the terrain and toggle the water
+
+    public void ToggleTerrain()
+	{
+		if(visibleT==true)
+		{
+			runner.GetComponent<GenerateWells>().SetTerrainVisibility(true);
+			visibleT = false;
+		}
+		else
+		{
+			runner.GetComponent<GenerateWells>().SetTerrainVisibility(false);
+			visibleT = true;
+		}
+		
+	}
+
+	public void ToggleWater()
+	{
+		if(visibleUG==true)
+		{
+			runner.GetComponent<GenerateWells> ().SetUGVisibility(false);
+			visibleUG = false;
+		}
+		else
+		{
+			runner.GetComponent<GenerateWells> ().SetUGVisibility(true);
+			visibleUG = true;
+		}
+		
+	}
+
         
 ## Contributors
 - Lino Virgen, Wenhao Ge, Kevon Manahan
@@ -186,15 +229,16 @@ There's a main menu when you begin the game that allows the player to select whi
 ### Work Distribution
 - Wenhao Ge's part:
   - Wrote the phase proposal
-  - Created a sider and wrote script to show different years when the slider is being slided
-  - Wrote script to make slider control many functions. When people drag the slider, many functions will be called according to the specific value of the slider
+  - Created a sider and wrote script to show different years when the slider is being slided from left to right 
+  - Wrote script to make slider control many functions. When people drag the slider, different functions will be called according to the specific value of the slider
   - Made a drop-down menu and created five choices in the drop-down menu
-  - Wrote script to let two panels appear when the user hovers the mouse over the wells and let two panels disappear when the mouse leave the wells
+  - Wrote script to control two panels to appear when the user hovers the mouse over the wells and let two panels disappear when the mouse leave the wells
   - Made two panels 
-  - Wrote script to read the data from .csv files and display all these data in two panels 
+  - Wrote script to read the data from .csv files 
   - Added the background music
-  - Modified the terrain coordinates when they are generated
+  - Changed the terrain coordinates to a more apropriate position
   - Wrote a big part in the project report
+  - Wrote C# script to display all the well-related information in two panels when the mouse hovers over each well
    
 - Kevon's part:
   - Relearned Python
